@@ -135,9 +135,9 @@ class sale_payment_config_settings(models.TransientModel):
     product_delivery_id = fields.Many2one(comodel_name="product.product", string="Delivery 14", required=False, )
     collect_on_delivery_id = fields.Many2one(comodel_name="product.product", string="Collect on delivery ", required=False, )
     product_mada_id = fields.Many2one(comodel_name="product.product", string="Product Mada Commission", required=False, )
-    mada_commission_percent = fields.Float(string="Mada Commission Percent %",  required=False, )
+    mada_commission_percent = fields.Float(string="Mada Commission Percent %",  required=False, digits=(16, 4))
     product_visa_id = fields.Many2one(comodel_name="product.product", string="Product Visa Commission", required=False, )
-    visa_commission_percent = fields.Float(string="Visa Commission Percent %",  required=False, )
+    visa_commission_percent = fields.Float(string="Visa Commission Percent %",  required=False, digits=(16, 4))
     product_return_id = fields.Many2one(comodel_name="product.product", string="Product Return", required=False, )
 
 
