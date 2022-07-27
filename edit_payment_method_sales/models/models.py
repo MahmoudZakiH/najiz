@@ -28,6 +28,7 @@ class EditSaleOrder(models.Model):
     visa_commission = fields.Float(string="Visa Commission",  required=False, )
     is_mada = fields.Boolean(string="Mada",)
     mada_commission = fields.Float(string="Mada Commission",  required=False, )
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Delivery Person')
 
 
     def compute_payment_method(self):
@@ -50,6 +51,7 @@ class EditSaleOrder(models.Model):
                 cc_list.append([0, 0, {
                     'product_id': product_delivery_sitting.id,
                     'name': product_delivery_sitting.name,
+                    'analytic_account_id': rec.analytic_account_id.id,
                     'product_uom_qty': 1 ,
                     'price_unit': 14,
                 }])
@@ -61,12 +63,14 @@ class EditSaleOrder(models.Model):
                     cod_cash.append([0, 0, {
                         'product_id': product_delivery_sitting.id,
                         'name': product_delivery_sitting.name,
+                        'analytic_account_id': rec.analytic_account_id.id,
                         'product_uom_qty': 1,
                         'price_unit': 14,
                     }])
                     cod_cash.append([0, 0, {
                         'product_id': collect_on_delivery_sitting.id,
                         'name': collect_on_delivery_sitting.name,
+                        'analytic_account_id': rec.analytic_account_id.id,
                         'product_uom_qty': 1,
                         'price_unit': 4,
                     }])
@@ -76,6 +80,7 @@ class EditSaleOrder(models.Model):
                     cod_mada.append([0, 0, {
                         'product_id': product_mada_sitting.id,
                         'name': product_mada_sitting.name,
+                        'analytic_account_id': rec.analytic_account_id.id,
                         'product_uom_qty': 1,
                         'price_unit': mada_commission_percent_sitting / 100 * rec.mada_commission ,
                     }])
@@ -85,6 +90,7 @@ class EditSaleOrder(models.Model):
                     cod_visa.append([0, 0, {
                         'product_id': product_visa_sitting.id,
                         'name': product_visa_sitting.name,
+                        'analytic_account_id': rec.analytic_account_id.id,
                         'product_uom_qty': 1,
                         'price_unit': visa_commission_percent_sitting / 100 * rec.visa_commission ,
                     }])
