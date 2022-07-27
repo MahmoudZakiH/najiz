@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="action_server_compute_all_sales_payment_id" model="ir.actions.server">
+            <field name="name">Compute All</field>
+            <field name="type">ir.actions.server</field>
+           <field name="model_id" ref="sale.model_sale_order"/>
+            <field name="binding_model_id" ref="sale.model_sale_order"/>
+<!--            <field name="binding_view_types">list</field>-->
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    records.compute_payment_method()
+            </field>
+        </record>
+
+        <!-- Inherit Form View to Modify it -->
+        <record id="sale_order_add_payment_type_method_id" model="ir.ui.view">
+            <field name="name">sale.order.add.payment.type.method</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//header" position="inside">
+                    <!-- Add your fields or attributes here -->
+                    <button name="compute_payment_method" type="object" string="Compute"/>
+                </xpath>
+
+                <xpath expr="//field[@name='payment_term_id']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="payment_state"/>
+                    <field name="payment_type_method"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="is_cash" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
+                    <field name="is_visa" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
+                    <field name="visa_commission" attrs="{'invisible': [('is_visa', '!=', True)],'required': [('is_visa', '=', True)]}"/>
+                    <field name="is_mada" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
+                    <field name="mada_commission" attrs="{'invisible': [('is_mada', '!=', True)],'required': [('is_mada', '=', True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="analytic_account_id"/>
+                </xpath>
+
+
+            </field>
+        </record>
+        <record id="sale_payment_res_config_settings" model="ir.ui.view">
+            <field name="name">res.config.settings.payment.inherited</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@id='connectors_setting_container']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <h2 class="mt32">Payment Type Method</h2>
+                    <div class="row mt16 o_settings_container">
+                        <div class="col-lg-6 col-12 o_setting_box" id="mrp_mps"
+                             title="Using a MPS report to schedule your reordering and manufacturing operations is useful if you have long lead time and if you produce based on sales forecasts.">
+
+                            <div class="row mt16">
+                                <label for="product_delivery_id" string="Delivery 14" class="col-lg-4 o_light_label"/>
+                                <field name="product_delivery_id" class="oe_inline"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="collect_on_delivery_id" string="Collect on delivery" class="col-lg-4 o_light_label"/>
+                                <field name="collect_on_delivery_id" class="oe_inline"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="product_mada_id" string="Product Mada Commission" class="col-lg-4 o_light_label"/>
+                                <field name="product_mada_id" class="oe_inline"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="mada_commission_percent" string="Mada Commission Percent %" class="col-lg-4 o_light_label"/>
+                                <field name="mada_commission_percent" class="oe_inline"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="product_visa_id" string="Product Visa Commission" class="col-lg-4 o_light_label"/>
+                                <field name="product_visa_id" class="oe_inline"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="visa_commission_percent" string="Visa Commission Percent %" class="col-lg-4 o_light_label"/>
+                                <field name="visa_commission_percent" class="oe_inline"/>
+                            </div>
+
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
