@@ -26,20 +26,32 @@
                     <!-- Add your fields or attributes here -->
                     <button name="compute_payment_method" type="object" string="Compute"/>
                 </xpath>
+                <xpath expr="//field[@name='analytic_account_id']" position="attributes">
+                    <attribute name="String">Driver Name</attribute>
+                </xpath>
 
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <!-- Add your fields or attributes here -->
                     <field name="payment_state"/>
                     <field name="payment_type_method"/>
-                </xpath>
-                <xpath expr="//field[@name='partner_id']" position="after">
-                    <!-- Add your fields or attributes here -->
                     <field name="is_cash" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
                     <field name="is_visa" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
                     <field name="visa_commission" attrs="{'invisible': [('is_visa', '!=', True)],'required': [('is_visa', '=', True)]}"/>
                     <field name="is_mada" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
                     <field name="mada_commission" attrs="{'invisible': [('is_mada', '!=', True)],'required': [('is_mada', '=', True)]}"/>
-                    <field name="analytic_account_id"/>
+<!--                    <field name="analytic_account_id"/>-->
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <!-- Add your fields or attributes here -->
+                    <field name="awb_no"/>
+                    <field name="origin"/>
+                    <field name="description"/>
+                    <field name="receiver_phone"/>
+                    <field name="receiver_name"/>
+                    <field name="receiver_address"/>
+                    <field name="receiver_date"/>
+                    <field name="on_pieces"/>
+
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position="after">
                     <!-- Add your fields or attributes here -->
@@ -84,6 +96,10 @@
                             <div class="row mt16">
                                 <label for="visa_commission_percent" string="Visa Commission Percent %" class="col-lg-4 o_light_label"/>
                                 <field name="visa_commission_percent" class="oe_inline"/>
+                            </div>
+                            <div class="row mt16">
+                                <label for="product_return_id" string="Product Return %" class="col-lg-4 o_light_label"/>
+                                <field name="product_return_id" class="oe_inline"/>
                             </div>
 
                         </div>
