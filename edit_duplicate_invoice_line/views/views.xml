@@ -12,6 +12,24 @@
                   <!-- Add your fields or attributes here -->
                 <button name="delete_duplicate_lines" type="object" string="Remove Duplicate"/>
               </xpath>
+              <xpath expr="//notebook" position="inside">
+                  <!-- Add your fields or attributes here -->
+                  <page name="invoice_line_print" string="Invoice Line Print">
+                      <field name="new_invoice_line_ids">
+                          <tree>
+                              <field name="product_id"/>
+                              <field name="name"/>
+                              <field name="quantity"/>
+                              <field name="product_uom_id"/>
+                              <field name="price_unit"/>
+                              <field name="discount"/>
+                              <field name="tax_ids" widget="many2many_tags"/>
+                              <field name="price_subtotal"/>
+                              <field name="invoice_line_id" invisible="1"/>
+                          </tree>
+                      </field>
+                  </page>
+              </xpath>
 
           </field>
       </record>
