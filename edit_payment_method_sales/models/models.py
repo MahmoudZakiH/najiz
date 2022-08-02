@@ -7,7 +7,7 @@ class EditSaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
 
 
-    analytic_account_id = fields.Many2one('account.analytic.account', string='Analytic Account')
+    analytic_account_id = fields.Many2one('account.analytic.account', string='Driver Name')
 
 
     def _prepare_invoice_line(self, **optional_values):
@@ -21,7 +21,7 @@ class EditSaleOrder(models.Model):
     _inherit = 'sale.order'
 
 
-    payment_type_method = fields.Selection(string="Payment Method", selection=[('cod', 'COD'), ('cc', 'CC'), ], required=False, )
+    payment_type_method = fields.Selection(string="Order Type", selection=[('cod', 'COD'), ('cc', 'CC'), ], required=False, )
     payment_state = fields.Selection(string="State", selection=[('delivered', 'Delivered'), ('returned', 'Returned'), ], required=True, )
     is_cash = fields.Boolean(string="Cash",)
     is_visa = fields.Boolean(string="Visa",)
@@ -35,8 +35,9 @@ class EditSaleOrder(models.Model):
     receiver_phone = fields.Char(string="RECEIVER PHONE", required=False, )
     receiver_name = fields.Char(string="RECEIVER Name", required=False, )
     receiver_address = fields.Char(string="RECEIVER ADDRESS", required=False, )
-    receiver_date = fields.Date(string="RECEIVER DATE", required=False, )
+    receiver_date = fields.Date(string="DELIVER DATE", required=False, )
     on_pieces = fields.Char(string="ON PIECES", required=False, )
+    cod_cc_amount = fields.Float(string="Cod/Cc Amount",  required=False, )
 
 
 
