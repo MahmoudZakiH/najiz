@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+      <!-- Inherit Form View to Modify it -->
+      <record id="account_move_add_button_duplicate_id" model="ir.ui.view">
+          <field name="name">account.move.add.button.duplicate</field>
+          <field name="model">account.move</field>
+          <field name="inherit_id" ref="account.view_move_form"/>
+          <field name="arch" type="xml">
+
+              <xpath expr="//header" position="inside">
+                  <!-- Add your fields or attributes here -->
+                <button name="delete_duplicate_lines" type="object" string="Remove Duplicate"/>
+              </xpath>
+              <xpath expr="//notebook" position="inside">
+                  <!-- Add your fields or attributes here -->
+                  <page name="invoice_line_print" string="Invoice Line Print">
+                      <field name="new_invoice_line_ids">
+                          <tree>
+                              <field name="product_id"/>
+                              <field name="name"/>
+                              <field name="quantity"/>
+                              <field name="product_uom_id"/>
+                              <field name="price_unit"/>
+                              <field name="discount"/>
+                              <field name="tax_ids" widget="many2many_tags"/>
+                              <field name="price_subtotal"/>
+                              <field name="invoice_line_id" invisible="1"/>
+                          </tree>
+                      </field>
+                  </page>
+              </xpath>
+
+          </field>
+      </record>
+    </data>
+</odoo>
