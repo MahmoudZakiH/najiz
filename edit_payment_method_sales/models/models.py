@@ -22,8 +22,10 @@ class EditSaleOrder(models.Model):
 
 
     payment_type_method = fields.Selection(string="Order Type", selection=[('cod', 'COD'), ('cc', 'CC'), ], required=False, )
+    cod_amount = fields.Float(string="Cod Amount", required=False,compute='get_cod_amount' )
     payment_state = fields.Selection(string="State", selection=[('delivered', 'Delivered'), ('returned', 'Returned'), ], required=True, )
     is_cash = fields.Boolean(string="Cash",)
+    cash_amount = fields.Float(string="Cash Amount", required=False, )
     is_visa = fields.Boolean(string="Visa",)
     visa_commission = fields.Float(string="Visa Amount",  required=False, )
     is_mada = fields.Boolean(string="Mada",)
@@ -38,6 +40,13 @@ class EditSaleOrder(models.Model):
     receiver_date = fields.Date(string="DELIVER DATE", required=False, )
     on_pieces = fields.Char(string="ON PIECES", required=False, )
     cod_cc_amount = fields.Float(string="Cod/Cc Amount",  required=False, )
+
+
+
+    @api.depends('cash_amount','visa_commission','mada_commission')
+    def get_cod_amount(self):
+        for rec in self:
+            rec.cod_amount=rec.cash_amount+rec.visa_commission+rec.mada_commission
 
 
 
@@ -91,7 +100,7 @@ class EditSaleOrder(models.Model):
                         }])
                         print('cod_cashcod_cash', cod_cash)
                         rec.order_line = cod_cash
-                    if rec.is_mada:
+                    if rec.is_mada :
                         cod_mada.append([0, 0, {
                             'product_id': product_mada_sitting.id,
                             'name': product_mada_sitting.name,
@@ -99,6 +108,14 @@ class EditSaleOrder(models.Model):
                             'product_uom_qty': 1,
                             'price_unit': mada_commission_percent_sitting / 100 * rec.mada_commission,
                         }])
+                        if not rec.is_cash:
+                            cod_mada.append([0, 0, {
+                                'product_id': product_delivery_sitting.id,
+                                'name': product_delivery_sitting.name,
+                                'analytic_account_id': rec.analytic_account_id.id,
+                                'product_uom_qty': 1,
+                                'price_unit': 14,
+                            }])
                         rec.order_line = cod_mada
                     if rec.is_visa:
                         print('tttttttttttttttt mada')
@@ -110,6 +127,14 @@ class EditSaleOrder(models.Model):
                             'price_unit': visa_commission_percent_sitting / 100 * rec.visa_commission,
                         }])
                         print('cod_visa', cod_visa)
+                        if not rec.is_cash:
+                            cod_visa.append([0, 0, {
+                                'product_id': product_delivery_sitting.id,
+                                'name': product_delivery_sitting.name,
+                                'analytic_account_id': rec.analytic_account_id.id,
+                                'product_uom_qty': 1,
+                                'price_unit': 14,
+                            }])
                         rec.order_line = cod_visa
             elif rec.payment_state == 'returned':
                 return_list.append([0, 0, {

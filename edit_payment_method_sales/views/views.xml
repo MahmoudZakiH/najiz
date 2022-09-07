@@ -24,7 +24,7 @@
 
                 <xpath expr="//header" position="inside">
                     <!-- Add your fields or attributes here -->
-                    <button name="compute_payment_method" type="object" string="Compute"/>
+                    <button name="compute_payment_method" type="object" string="Compute" attrs="{'invisible': [('state', 'in', ['sale','done'])]}"/>
                 </xpath>
                 <xpath expr="//field[@name='analytic_account_id']" position="attributes">
                     <attribute name="String">Driver Name</attribute>
@@ -32,13 +32,15 @@
 
                 <xpath expr="//field[@name='payment_term_id']" position="after">
                     <!-- Add your fields or attributes here -->
-                    <field name="payment_state"/>
-                    <field name="payment_type_method"/>
-                    <field name="is_cash" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
-                    <field name="is_visa" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
-                    <field name="visa_commission" attrs="{'invisible': [('is_visa', '!=', True)],'required': [('is_visa', '=', True)]}"/>
-                    <field name="is_mada" attrs="{'invisible': [('payment_type_method', '!=', 'cod')]}"/>
-                    <field name="mada_commission" attrs="{'invisible': [('is_mada', '!=', True)],'required': [('is_mada', '=', True)]}"/>
+                    <field name="payment_state" attrs="{'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="payment_type_method" attrs="{'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="cod_amount" attrs="{'invisible': [('payment_type_method', '!=', 'cod')],'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="is_cash" attrs="{'invisible': [('payment_type_method', '!=', 'cod')],'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="cash_amount" attrs="{'invisible': [('is_cash', '!=', True)],'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="is_visa" attrs="{'invisible': [('payment_type_method', '!=', 'cod')],'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="visa_commission" attrs="{'invisible': [('is_visa', '!=', True)],'required': [('is_visa', '=', True)],'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="is_mada" attrs="{'invisible': [('payment_type_method', '!=', 'cod')],'readonly': [('state', 'in', ['sale','done'])]}"/>
+                    <field name="mada_commission" attrs="{'invisible': [('is_mada', '!=', True)],'required': [('is_mada', '=', True)],'readonly': [('state', 'in', ['sale','done'])]}"/>
 <!--                    <field name="analytic_account_id"/>-->
                 </xpath>
                 <xpath expr="//field[@name='partner_id']" position="after">
