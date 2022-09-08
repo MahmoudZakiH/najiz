@@ -23,7 +23,7 @@ class EditSaleOrder(models.Model):
 
     payment_type_method = fields.Selection(string="Order Type", selection=[('cod', 'COD'), ('cc', 'CC'), ], required=False, )
     cod_amount = fields.Float(string="Cod Amount", required=False,compute='get_cod_amount' )
-    payment_state = fields.Selection(string="State", selection=[('delivered', 'Delivered'), ('returned', 'Returned'), ], required=True, )
+    payment_state = fields.Selection(string="State", selection=[('delivered', 'Delivered'), ('returned', 'Return'), ], required=True, )
     is_cash = fields.Boolean(string="Cash",)
     cash_amount = fields.Float(string="Cash Amount", required=False, )
     is_visa = fields.Boolean(string="Visa",)
@@ -37,7 +37,7 @@ class EditSaleOrder(models.Model):
     receiver_phone = fields.Char(string="RECEIVER PHONE", required=False, )
     receiver_name = fields.Char(string="RECEIVER Name", required=False, )
     receiver_address = fields.Char(string="RECEIVER ADDRESS", required=False, )
-    receiver_date = fields.Date(string="DELIVER DATE", required=False, )
+    receiver_date = fields.Datetime(string="DELIVER DATE", required=False, )
     on_pieces = fields.Char(string="ON PIECES", required=False, )
     cod_cc_amount = fields.Float(string="Cod/Cc Amount",  required=False, )
 
